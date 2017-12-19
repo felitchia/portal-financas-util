@@ -12,6 +12,8 @@ from time import sleep
 
 from selenium import webdriver
 
+from util import login, minus_one_month
+
 config = ConfigParser()
 config.read("conf.ini")
 
@@ -24,31 +26,13 @@ preferences = {"download.default_directory": download_dir,
 chrome_options.add_experimental_option("prefs", preferences)
 
 
-def minus_one_month(date):
-    if date.month == 1:
-        return date.replace(month=12, year=date.year-1)
-    else:
-        return date.replace(month=date.month-1)
-
-
-def login(driver):
-    logging.info("Logging in.")
-    username_field = driver.find_element_by_id("username")
-    password_field = driver.find_element_by_id("password")
-
-    username_field.send_keys(config.get("portal_financas", "nif"))
-    password_field.send_keys(config.get("portal_financas", "password"))
-
-    driver.find_element_by_name("sbmtLogin").click()
-
-
 def create_fatura_verde():
     driver = webdriver.Chrome()
 
     logging.info("Entering page.")
     driver.get(config.get("portal_financas", "url_emitir_facturas"))
 
-    login(driver)
+    login(driver, config)
 
     logging.info("Filling form.")
 
@@ -102,7 +86,7 @@ def create_fatura_verde():
 def send_last_invoice_by_email():
     driver = webdriver.Chrome(chrome_options=chrome_options)
     driver.get(config.get("portal_financas", "url_consultar_facturas"))
-    login(driver)
+    login(driver, config)
 
     sleep(2)
 
