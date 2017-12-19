@@ -76,6 +76,8 @@ def create_fatura_verde():
     salary_field.send_keys(salary)
 
     driver.find_element_by_xpath("//button[text() = 'Emitir']").click()
+    sleep(1)
+    driver.find_element_by_xpath("//div[@class = 'modal-dialog']//button[text() = 'Emitir']").click()
 
     sleep(2)
 
