@@ -123,3 +123,8 @@ pip-selfcheck.json
 ### Others
 conf.ini
 .idea/
+Pipfile
+Pipfile.lock
+create_and_send_invoice.sh
+create_last_months_receipt.sh
+create_last_months_periodic_iva_declaration.sh

@@ -12,7 +12,7 @@ config.read("conf.ini")
 
 
 def create_last_months_receipt():
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(config.get("other", "chromedriver_path"))
 
     driver.get(config.get("portal_financas", "url_emitir_recibos"))
 

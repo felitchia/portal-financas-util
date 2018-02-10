@@ -11,7 +11,7 @@ config.read("conf.ini")
 
 
 def create_periodic_iva_declaration():
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(config.get("other", "chromedriver_path"))
 
     driver.get(config.get("portal_financas", "url_declaracao_iva"))
     driver.fullscreen_window()
