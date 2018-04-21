@@ -13,9 +13,18 @@ config.read("conf.ini")
 def create_periodic_iva_declaration():
     driver = webdriver.Chrome(config.get("other", "chromedriver_path"))
 
-    driver.get(config.get("portal_financas", "url_declaracao_iva"))
+    driver.get(config.get("portal_financas", "url_consultar_facturas"))
     driver.fullscreen_window()
     login(driver, config)
+    sleep(2)
+    tables_recibos = driver.find_elements_by_class_name("tbody-border-primary")
+    assert len(tables_recibos) == 1
+    table = tables_recibos[0]
+    salary = int(table.find_element_by_tag_name("tr").find_elements_by_tag_name("td")[3].text.strip(" €")[:-3].replace('.', ''))
+
+    driver.get(config.get("portal_financas", "url_declaracao_iva"))
+    driver.fullscreen_window()
+    #login(driver, config)
     sleep(2)
 
     today = datetime.today()
@@ -33,8 +42,8 @@ def create_periodic_iva_declaration():
     driver.find_element_by_xpath("//lf-radio[@lf-label = 'Tem imposto dedutível e/ou regularizações?']//input[@value='N']").click()
     driver.find_element_by_xpath("//lf-radio[@lf-catalog = 'apuramento-tem-operacoes-adquirente-com-liq-imposto']//input[@value = '02']").click()
 
-    salary = str(int(config.get('company', 'salary')) * 100)
-    driver.find_element_by_xpath("//input[@name='btOperacoesIsentasSemDeducao']").send_keys(salary)
+    salary_formatted = str(salary * 100)
+    driver.find_element_by_xpath("//input[@name='btOperacoesIsentasSemDeducao']").send_keys(salary_formatted)
 
     driver.find_element_by_xpath("//button[contains(text(), 'Submeter')]").click()
 
