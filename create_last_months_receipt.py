@@ -29,7 +29,7 @@ def create_last_months_receipt():
 
     assert datetime.today().month == invoice_date.month, "It's expected that the invoice in the first row was created in the current month"
 
-    first_row.find_element_by_xpath("td[5]").click()
+    first_row.find_element_by_xpath("td[5]/button").click()
 
     radio_button_to_click = driver.find_element_by_xpath("//label/input[@value=1]/..")
     assert radio_button_to_click.text == "Pagamento dos bens ou dos serviços"
